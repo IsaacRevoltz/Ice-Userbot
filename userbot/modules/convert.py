@@ -26,23 +26,23 @@ async def cevir(event):
         if len(botice) < 1:
             await edit_delete(
                 event,
-                "**Perintah tidak diketahui! ketik** `.help convert` **bila butuh bantuan**",
+                "**Comando desconhecido! digite** `.help convert` **se precisar de ajuda**",
                 30,
             )
             return
     except BaseException:
         await edit_delete(
             event,
-            "**Perintah tidak diketahui! ketik** `.help convert` **bila butuh bantuan**",
+            "**Comando desconhecido! digite** `.help convert` **se precisar de ajuda**",
             30,
         )
         return
     if botice in ["foto", "photo"]:
         rep_msg = await event.get_reply_message()
         if not event.is_reply or not rep_msg.sticker:
-            await edit_delete(event, "**Harap balas ke stiker.**")
+            await edit_delete(event, "**Por favor, responda ao adesivo.**")
             return
-        xxnx = await edit_or_reply(event, "`Mengconvert ke foto...`")
+        xxnx = await edit_or_reply(event, "`Converter em foto...`")
         foto = io.BytesIO()
         foto = await event.client.download_media(rep_msg.sticker, foto)
         im = Image.open(foto).convert("RGB")
@@ -55,18 +55,18 @@ async def cevir(event):
         await xxnx.delete()
         os.remove("sticker.png")
     elif botice in ["sound", "audio"]:
-        EFEKTLER = ["bengek", "robot", "jedug", "fast", "echo"]
+        EFEKTLER = ["tosse", "robo", "jedi", "rapido", "eco"]
         efekt = event.pattern_match.group(2)
         if len(efekt) < 1:
             return await edit_delete(
                 event,
-                "**Efek yang Anda tentukan tidak ditemukan!**\n**Efek yang dapat Anda gunakan:** bengek/robot/jedug/fast/echo`",
+                "**O efeito que você especificou não foi encontrado!**\n**Efeitos que você pode usar:** tosse/robo/jedi/rapido/eco`",
                 30,
             )
         rep_msg = await event.get_reply_message()
         if not event.is_reply or not (rep_msg.voice or rep_msg.audio):
-            return await edit_delete(event, "**Harap balas ke file Audio.**")
-        xxx = await edit_or_reply(event, "`Applying effect...`")
+            return await edit_delete(event, "**Por favor, responda ao arquivo de áudio.**")
+        xxx = await edit_or_reply(event, "`Aplicando o efeito...`")
         if efekt in EFEKTLER:
             indir = await rep_msg.download_media()
             KOMUT = {
@@ -91,13 +91,13 @@ async def cevir(event):
             os.remove("output.mp3")
         else:
             await xxx.edit(
-                "**Efek yang Anda tentukan tidak ditemukan!**\n**Efek yang dapat Anda gunakan:** bengek/robot/jedug/fast/echo`"
+                "**O efeito que você especificou não foi encontrado!**\n**Efeitos que você pode usar:** tosse/robo/jedi/rapido/eco`"
             )
     elif botice == "mp3":
         rep_msg = await event.get_reply_message()
         if not event.is_reply or not rep_msg.video:
-            return await edit_delete(event, "**Harap balas ke Video!**")
-        xx = await edit_or_reply(event, "`Mengconvert ke sound...`")
+            return await edit_delete(event, "**Por favor, responda ao vídeo!**")
+        xx = await edit_or_reply(event, "`Converter em som...`")
         video = io.BytesIO()
         video = await event.client.download_media(rep_msg.video)
         gif = await asyncio.create_subprocess_shell(
@@ -114,13 +114,13 @@ async def cevir(event):
             )
         except BaseException:
             os.remove(video)
-            return await xx.edit("**Tidak dapat mengconvert ke audio! 🥺**")
+            return await xx.edit("**Não é possível converter para áudio! 🥺**")
         await xx.delete()
         os.remove("out.mp3")
         os.remove(video)
     else:
         await xx.edit(
-            "**Perintah tidak diketahui! ketik** `.help convert` **bila butuh bantuan**"
+            "**Comando desconhecido! digite** `.help convert` **se precisar de ajuda**"
         )
         return
 
@@ -128,11 +128,11 @@ async def cevir(event):
 @ice_cmd(pattern="makevoice$")
 async def makevoice(event):
     if not event.reply_to:
-        return await edit_delete(event, "**Mohon Balas Ke Audio atau video**")
+        return await edit_delete(event, "**Por favor, responda ao áudio ou vídeo**")
     msg = await event.get_reply_message()
     if not event.is_reply or not (msg.audio or msg.video):
-        return await edit_delete(event, "**Mohon Balas Ke Audio atau video**")
-    xxnx = await edit_or_reply(event, "`Processing...`")
+        return await edit_delete(event, "**Por favor, responda ao áudio ou vídeo**")
+    xxnx = await edit_or_reply(event, "`Processando...`")
     dl = msg.file.name
     file = await msg.download_media(dl)
     await xxnx.edit("`Converting to Voice Note...`")
@@ -150,15 +150,15 @@ async def makevoice(event):
 CMD_HELP.update(
     {
         "convert": f"**Plugin : **`core`\
-        \n\n  •  **Syntax :** `{cmd}convert foto`\
-        \n  •  **Function : **Untuk Mengconvert sticker ke foto\
-        \n\n  •  **Syntax :** `{cmd}convert mp3`\
-        \n  •  **Function : **Untuk Mengconvert dari video ke file mp3\
+        \n\n  •  **Syntax :** `{cmd}converter foto`\
+        \n  •  **Function : **Para converter adesivo em foto\
+        \n\n  •  **Syntax :** `{cmd}converter mp3`\
+        \n  •  **Function : **Para converter de vídeo para arquivo mp3\
         \n\n  •  **Syntax :** `{cmd}makevoice`\
-        \n  •  **Function : **Untuk Mengconvert audio ke voice note\
-        \n\n  •  **Syntax :** `{cmd}convert audio` <efek>\
-        \n  •  **Function : **Untuk Menambahkan efek suara jadi berskin\
-        \n  •  **List Efek :** `bengek`, `jedug`, `echo`, `robot`\
+        \n  •  **Function : **Para converter áudio em nota de voz\
+        \n\n  •  **Syntax :** `{cmd}converter audio` <efeito>\
+        \n  •  **Function : **Para adicionar um efeito de som fino\
+        \n  •  **List Efek :** `tosse`, `jedi`, `eco`, `robo`\
     "
     }
 )
