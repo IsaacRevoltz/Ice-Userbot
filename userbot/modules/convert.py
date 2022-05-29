@@ -26,23 +26,23 @@ async def cevir(event):
         if len(botice) < 1:
             await edit_delete(
                 event,
-                "**Perintah tidak diketahui! ketik** `.help convert` **bila butuh bantuan**",
+                "**Comando desconhecido! digite** `.help convert` **se precisar de ajuda**",
                 30,
             )
             return
     except BaseException:
         await edit_delete(
             event,
-            "**Perintah tidak diketahui! ketik** `.help convert` **bila butuh bantuan**",
+            "**Comando desconhecido! digite** `.help convert` **se precisar de ajuda**",
             30,
         )
         return
     if botice in ["foto", "photo"]:
         rep_msg = await event.get_reply_message()
         if not event.is_reply or not rep_msg.sticker:
-            await edit_delete(event, "**Harap balas ke stiker.**")
+            await edit_delete(event, "**Por favor, responda ao adesivo.**")
             return
-        xxnx = await edit_or_reply(event, "`Mengconvert ke foto...`")
+        xxnx = await edit_or_reply(event, "``Converter em foto...`")
         foto = io.BytesIO()
         foto = await event.client.download_media(rep_msg.sticker, foto)
         im = Image.open(foto).convert("RGB")
