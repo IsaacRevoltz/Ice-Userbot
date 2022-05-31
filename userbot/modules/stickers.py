@@ -42,11 +42,8 @@ from userbot.utils import edit_delete, edit_or_reply, ice_cmd
 from userbot.utils.misc import animator
 
 KANGING_STR = [
-    "Colong Sticker dulu yee kan",
-    "Ini Sticker aku colong yaa DUARR!",
-    "Waw Stickernya Bagus Nih...Colong Dulu Yekan..",
-    "ehh, keren nih... gua colong ya stickernya...",
-    "Boleh juga ni Sticker Colong ahh~",
+    "Deixa eu catar esse Sticker pra mim ",
+    "É meu sticker agora!",
 ]
 
 
@@ -64,7 +61,7 @@ async def kang(args):
 
     if not message:
         return await edit_delete(
-            args, "**Silahkan Reply Ke Pesan Media Untuk Mencuri Sticker itu!**"
+            args, "**Responda às mensagens da mídia para roubar o sticker!**"
         )
 
     if isinstance(message.media, MessageMediaPhoto):
@@ -73,7 +70,7 @@ async def kang(args):
         photo = await args.client.download_media(message.photo, photo)
     elif isinstance(message.media, MessageMediaUnsupported):
         await edit_delete(
-            args, "**File Tidak Didukung, Silahkan Reply ke Media Foto/GIF !**"
+            args, "**Arquivo não suportado, responda à mídia de foto/GIF!**"
         )
     elif message.file and "image" in message.file.mime_type.split("/"):
         xx = await edit_or_reply(args, f"`{random.choice(KANGING_STR)}`")
@@ -110,7 +107,7 @@ async def kang(args):
         photo = 1
     else:
         return await edit_delete(
-            args, "**File Tidak Didukung, Silahkan Reply ke Media Foto/GIF !**"
+            args, "**Arquivo não suportado, responda à mídia de foto/GIF !**"
         )
     if photo:
         splat = args.text.split()
@@ -181,13 +178,13 @@ async def kang(args):
                         packname = f"Sticker_u{user.id}_Ke{pack}"
                         packnick = f"Sticker Pack {f_name}"
                     await xx.edit(
-                        "`Membuat Sticker Pack Baru "
+                        "`Criando um novo pacote de stickers "
                         + str(pack)
-                        + " Karena Sticker Pack Sudah Penuh`"
+                        + " Porque o pacote de stickers está cheio`"
                     )
                     await conv.send_message(packname)
                     x = await conv.get_response()
-                    if x.text == "Gagal Memilih Pack.":
+                    if x.text == "Falha ao escolher um pacote.":
                         await conv.send_message(cmd)
                         await conv.get_response()
                         await args.client.send_read_acknowledge(conv.chat_id)
@@ -221,9 +218,9 @@ async def kang(args):
                         await conv.get_response()
                         await args.client.send_read_acknowledge(conv.chat_id)
                         return await xx.edit(
-                            "`Sticker ditambahkan ke pack yang berbeda !"
-                            "\nIni pack yang baru saja dibuat!"
-                            f"\nTekan [Sticker Pack](t.me/addstickers/{packname}) Untuk Melihat Sticker Pack",
+                            "`stickers adicionados a diferentes pacotes !"
+                            "\nEste é o pacote que acabou de ser feito!"
+                            f"\nPressione [Sticker Pack](t.me/addstickers/{packname}) Para ver o pacote de stickers",
                             parse_mode="md",
                         )
                 if is_anim:
@@ -238,7 +235,7 @@ async def kang(args):
                 rsp = await conv.get_response()
                 if "Sorry, the file type is invalid." in rsp.text:
                     return await xx.edit(
-                        "**Gagal Menambahkan Sticker, Gunakan @Stickers Bot Untuk Menambahkan Sticker Anda.**"
+                        "**Falha ao adicionar sticker, use @Stickers Bot para adicionar seu sticker.**"
                     )
                 await conv.send_message(emoji)
                 await args.client.send_read_acknowledge(conv.chat_id)
@@ -247,7 +244,7 @@ async def kang(args):
                 await conv.get_response()
                 await args.client.send_read_acknowledge(conv.chat_id)
         else:
-            await xx.edit("`Membuat Sticker Pack Baru`")
+            await xx.edit("`Criando um novo pacote de stickers`")
             async with args.client.conversation("@Stickers") as conv:
                 try:
                     await conv.send_message(cmd)
@@ -271,7 +268,7 @@ async def kang(args):
                 rsp = await conv.get_response()
                 if "Sorry, the file type is invalid." in rsp.text:
                     return await xx.edit(
-                        "**Gagal Menambahkan Sticker, Gunakan @Stickers Bot Untuk Menambahkan Sticker.**"
+                        "**Falha ao adicionar sticker, use @Stickers Bot para adicionar sticker.**"
                     )
                 await conv.send_message(emoji)
                 await args.client.send_read_acknowledge(conv.chat_id)
@@ -291,8 +288,8 @@ async def kang(args):
                 await args.client.send_read_acknowledge(conv.chat_id)
 
         await xx.edit(
-            "** Sticker Berhasil Ditambahkan!**"
-            f"\n        👻 **[KLIK DISINI](t.me/addstickers/{packname})** 👻\n**Untuk Menggunakan Stickers**",
+            "** Sticker adicionado com sucesso!**"
+            f"\n        👻 **[CLIQUE AQUI](t.me/addstickers/{packname})** 👻\n**Para usar Stickers**",
             parse_mode="md",
         )
 
@@ -334,7 +331,7 @@ async def _(event):
     un_ = user.username or OWNER_ID
     if not reply:
         return await edit_delete(
-            xnxx, "**Mohon Balas sticker untuk mencuri semua Sticker Pack itu.**"
+            xnxx, "**Por favor, responda o Sticker para roubar todos os pacotes de stickers.**"
         )
     pname = f"{un} Sticker Pack" if query == "" else query
     if reply.media and reply.media.document.mime_type == "image/webp":
@@ -375,7 +372,7 @@ async def _(event):
             addgvar("PKANG", str(pack))
         except PackShortNameOccupiedError:
             await asyncio.sleep(1)
-            await xnxx.edit("`Sedang membuat paket baru...`")
+            await xnxx.edit("`Fazendo um novo pacote...`")
             pack += 1
             create_st = await bot(
                 functions.stickers.CreateStickerSetRequest(
@@ -387,31 +384,31 @@ async def _(event):
             )
             addgvar("PKANG", str(pack))
         await xnxx.edit(
-            f"**Berhasil Mencuri Sticker Pack,** [Klik Disini](t.me/addstickers/{create_st.set.short_name}) **Untuk Melihat Pack anda**"
+            f"**Roubando com sucesso o pacote de stickers,** [Clique aqui](t.me/addstickers/{create_st.set.short_name}) **Para ver seu pacote**"
         )
     else:
-        await xnxx.edit("**Berkas Tidak Didukung. Harap Balas ke stiker saja.**")
+        await xnxx.edit("**Arquivo não suportado. Por favor, responda apenas aos stickers.**")
 
 
 @ice_cmd(pattern="stickerinfo$")
 async def get_pack_info(event):
     if not event.is_reply:
-        return await edit_delete(event, "**Mohon Balas Ke Sticker**")
+        return await edit_delete(event, "**Por favor, responda ao sticker**")
 
     rep_msg = await event.get_reply_message()
     if not rep_msg.document:
         return await edit_delete(
-            event, "**Balas ke sticker untuk melihat detail pack**"
+            event, "**Responda ao sticker para ver os detalhes do pacote**"
         )
 
     try:
         stickerset_attr = rep_msg.document.attributes[1]
         xx = await edit_or_reply(event, "`Processing...`")
     except BaseException:
-        return await edit_delete(xx, "**Ini bukan sticker, Mohon balas ke sticker.**")
+        return await edit_delete(xx, "**Este não é um sticker, responda ao sticker.**")
 
     if not isinstance(stickerset_attr, DocumentAttributeSticker):
-        return await edit_delete(xx, "**Ini bukan sticker, Mohon balas ke sticker.**")
+        return await edit_delete(xx, "**Este não é um sticker, responda ao sticker.**")
 
     get_stickerset = await event.client(
         GetStickerSetRequest(
@@ -443,12 +440,12 @@ async def _(event):
     if event.fwd_from:
         return
     if not event.reply_to_msg_id:
-        await edit_delete(event, "**Mohon Reply ke Sticker yang ingin anda Hapus.**")
+        await edit_delete(event, "**Responda ao sticker que deseja excluir.**")
         return
     reply_message = await event.get_reply_message()
     chat = "@Stickers"
     if reply_message.sender.bot:
-        await edit_delete(event, "**Mohon Reply ke Sticker.**")
+        await edit_delete(event, "**Por favor, responda ao sticker.**")
         return
     xx = await edit_or_reply(event, "`Processing...`")
     async with event.client.conversation(chat) as conv:
@@ -471,17 +468,17 @@ async def _(event):
         if response.text.startswith(
             "Sorry, I can't do this, it seems that you are not the owner of the relevant pack."
         ):
-            await xx.edit("**Maaf, Sepertinya Anda bukan Pemilik Sticker pack ini.**")
+            await xx.edit("**Desculpe, parece que você não é o proprietário deste pacote de stickers.**")
         elif response.text.startswith(
             "You don't have any sticker packs yet. You can create one using the /newpack command."
         ):
-            await xx.edit("**Anda Tidak Memiliki Stiker untuk di Hapus**")
+            await xx.edit("**Você não tem stickers para remover**")
         elif response.text.startswith("Please send me the sticker."):
-            await xx.edit("**Tolong Reply ke Sticker yang ingin dihapus**")
+            await xx.edit("**Responda ao sticker que deseja excluir**")
         elif response.text.startswith("Invalid pack selected."):
-            await xx.edit("**Maaf Paket yang dipilih tidak valid.**")
+            await xx.edit("**Desculpe, o pacote selecionado não é válido.**")
         else:
-            await xx.edit("**Berhasil Menghapus Stiker.**")
+            await xx.edit("**Remover sticker com sucesso.**")
 
 
 @ice_cmd(pattern="editsticker ?(.*)")
@@ -489,16 +486,16 @@ async def _(event):
     if event.fwd_from:
         return
     if not event.reply_to_msg_id:
-        await edit_delete(event, "**Mohon Reply ke Sticker dan Berikan emoji.**")
+        await edit_delete(event, "**Por favor, responda ao sticker e dê emoji.**")
         return
     reply_message = await event.get_reply_message()
     emot = event.pattern_match.group(1)
     if reply_message.sender.bot:
-        await edit_delete(event, "**Mohon Reply ke Sticker.**")
+        await edit_delete(event, "**Por favor, responda ao sticker.**")
         return
     xx = await edit_or_reply(event, "`Processing...`")
     if emot == "":
-        await xx.edit("**Silahkan Kirimkan Emot Baru.**")
+        await xx.edit("**Por favor, envie novos emoticons.**")
     else:
         chat = "@Stickers"
         async with event.client.conversation(chat) as conv:
@@ -525,29 +522,29 @@ async def _(event):
                 await conv.send_message(f"{emot}")
                 response = await response
             if response.text.startswith("Invalid pack selected."):
-                await xx.edit("**Maaf Paket yang dipilih tidak valid.**")
+                await xx.edit("**Desculpe, o pacote selecionado não é válido.**")
             elif response.text.startswith(
                 "Please send us an emoji that best describes your sticker."
             ):
                 await xx.edit(
-                    "**Silahkan Kirimkan emoji yang paling menggambarkan stiker Anda.**"
+                    "**Envie o emoji que melhor descreve seu sticker.**"
                 )
             else:
                 await xx.edit(
-                    f"**Berhasil Mengedit Emoji Stiker**\n**Emoji Baru:** {emot}"
+                    f"**Editando stickers emoji com sucesso**\n**Emoji Novo:** {emot}"
                 )
 
 
 @ice_cmd(pattern="getsticker$")
 async def sticker_to_png(sticker):
     if not sticker.is_reply:
-        await edit_delete(sticker, "**Harap balas ke stiker**")
+        await edit_delete(sticker, "**Por favor, responda ao sticker**")
         return False
     img = await sticker.get_reply_message()
     if not img.document:
-        await edit_delete(sticker, "**Maaf , Ini Bukan Sticker**")
+        await edit_delete(sticker, "**Desculpe, isso não é um sticker**")
         return False
-    xx = await edit_or_reply(sticker, "`Berhasil Mengambil Sticker!`")
+    xx = await edit_or_reply(sticker, "`sticker retirado com sucesso!`")
     image = io.BytesIO()
     await sticker.client.download_media(img, image)
     image.name = "sticker.png"
@@ -562,13 +559,13 @@ async def sticker_to_png(sticker):
 async def cb_sticker(event):
     query = event.pattern_match.group(1)
     if not query:
-        return await edit_delete(event, "**Masukan Nama Sticker Pack!**")
+        return await edit_delete(event, "**Digite o nome do pacote de stickers!**")
     xx = await edit_or_reply(event, "`Searching sticker packs...`")
     text = requests.get(f"https://combot.org/telegram/stickers?q={query}").text
     soup = bs(text, "lxml")
     results = soup.find_all("div", {"class": "sticker-pack__header"})
     if not results:
-        return await edit_delete(xx, "**Tidak Dapat Menemukan Sticker Pack 🥺**")
+        return await edit_delete(xx, "**Não é possível encontrar o pacote de stickers 🥺**")
     reply = f"**Keyword Sticker Pack:**\n {query}\n\n**Hasil:**\n"
     for pack in results:
         if pack.button:
@@ -584,7 +581,7 @@ async def _(event):
         return
     if not event.reply_to_msg_id:
         await edit_delete(
-            event, "sir this is not a image message reply to image message"
+            event, "senhor esta não é uma mensagem de imagem responda à mensagem de imagem"
         )
         return
     reply_message = await event.get_reply_message()
@@ -592,7 +589,7 @@ async def _(event):
         await edit_delete(event, "sir, This is not a image ")
         return
     chat = "@buildstickerbot"
-    xx = await edit_or_reply(event, "Membuat Sticker..")
+    xx = await edit_or_reply(event, "Fazendo Sticker..")
     async with event.client.conversation(chat) as conv:
         try:
             response = conv.wait_event(
@@ -619,8 +616,8 @@ async def _(event):
 async def _(event):
     rep_msg = await event.get_reply_message()
     if not event.is_reply or not rep_msg.sticker:
-        return await edit_delete(event, "**Harap balas ke stiker**")
-    xx = await edit_or_reply(event, "`Mengconvert ke foto...`")
+        return await edit_delete(event, "**Por favor, responda ao sticker**")
+    xx = await edit_or_reply(event, "`Converter em foto...`")
     foto = io.BytesIO()
     foto = await event.client.download_media(rep_msg.sticker, foto)
     im = Image.open(foto).convert("RGB")
